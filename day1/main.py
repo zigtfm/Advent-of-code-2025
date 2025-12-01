@@ -24,21 +24,18 @@ count = 0
 for x in instructions:
     dial_pre = dial
 
-    abs_x = abs(x)
-    if abs_x >= 100:
-        count += abs_x // 100
-
-        if x > 0:
-            x = x % 100
-        else:
-            x = x % -100
+    count += abs(x) // 100
+    if x > 0:
+        x = x % 100
+    else:
+        x = x % -100
 
     dial += x
 
     if dial_pre != 0 and ((dial >= 100) or (dial <= 0)):
         count += 1
 
-    dial = dial % 100
+    dial %= 100
 
 print(count)
 
