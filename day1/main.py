@@ -22,9 +22,13 @@ dial = 50
 count = 0
 
 for x in instructions:
-    dial = (dial + x) % 100
-    if dial == 0:
-        count += 1
+    sign = 1 if x > 0 else -1
+
+    for i in range(0, x, sign):
+        dial = (dial + sign) % 100
+
+        if dial == 0:
+            count += 1
 
 print(count)
 
