@@ -15,24 +15,41 @@ input.close()
 #endregion
 
 
-#region Solution
+#region Solution Part 1
 
 import re
 
 sum = 0
 
 for x in instructions:
-    for i in range(x[0], x[1]):
+    for i in range(x[0], x[1]+1):
         str_i = str(i)
 
         result = re.fullmatch(r'(.+)\1', str_i)
         if result != None:
             if result.string == str_i:
                 sum += i
-                print(i)
+
+print(sum)
+
+#endregion
+
+#region Solution Part 2
+
+import re
+
+sum = 0
+
+for x in instructions:
+    for i in range(x[0], x[1]+1):
+        str_i = str(i)
+
+        result = re.fullmatch(r'(.+)(\1)+', str_i)
+        if result != None:
+            if result.string == str_i:
+                sum += i
 
 
-print("\nSolution:")
 print(sum)
 
 #endregion
