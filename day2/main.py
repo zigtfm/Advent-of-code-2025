@@ -15,6 +15,16 @@ input.close()
 #endregion
 
 
+#region Helpers
+
+import math
+
+def int_len(number: int) -> int:
+    return int(math.log10(number)) + 1
+
+#endregion
+
+
 #region Solution
 
 import re
@@ -34,9 +44,26 @@ def solution_re(pattern: re.Pattern) -> int:
     return sum
 
 
-# Slow solution
-print(solution_re(r'(.+)\1'))
-print(solution_re(r'(.+)(\1)+'))
+def solution_simple_part1() -> int:
+    sum = 0
 
+    for x in instructions:
+        for i in range(x[0], x[1]+1):
+            i_len = int_len(i)
+            if i_len % 2 == 1: continue
+
+            half_len = i_len // 2
+            left_part = i // 10**half_len
+            right_part = i % 10**half_len
+            if left_part == right_part:
+                sum += i
+
+    return sum
+
+# Slow solution
+#print(solution_re(r'(.+)\1')) # 32976912643
+#print(solution_re(r'(.+)(\1)+')) # 54446379122
+
+assert(32976912643 == solution_simple_part1)
 
 #endregion
