@@ -63,13 +63,10 @@ def solution(input: dict) -> int:
     """
 
     for id in input["available_ids"]:
-        exit_loop = False
         for _range in input["valid_id_ranges"]:
             if id >= _range[0] and id <= _range[1]:
-                exit_loop = True
                 count += 1
                 break
-            if exit_loop: break
 
     return count
 
