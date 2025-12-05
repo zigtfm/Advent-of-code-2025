@@ -103,3 +103,5 @@ print("Part 1")
 perf_test(lambda:solution(init_input("input.txt")))
 print("Part 2")
 perf_test(lambda:solution_2(init_input("input.txt")))
+
+#endregion
