@@ -95,12 +95,20 @@ print(solution_2(init_input_2("input.txt")))
 
 import timeit
 
-def perf_test(func: callable):
-    print(f"{timeit.timeit(func,number=5)/5}s")
+def perf_test():
+    print("Part 1")
 
-print("Part 1")
-perf_test(lambda:solution_1(init_input_1("input.txt")))
-print("Part 2")
-perf_test(lambda:solution_2(init_input_2("input.txt")))
+    input_1 = init_input_1("input.txt")
+    print(f"Parse input\t{timeit.timeit((lambda:init_input_1("input.txt")),number=3)/3:9f}s")
+    print(f"Solve\t\t{timeit.timeit((lambda:solution_1(input_1)),number=3)/3:9f}s")
+
+    print("Part 2")
+
+    input_2 = init_input_2("input.txt")
+    print(f"Parse input\t{timeit.timeit((lambda:init_input_2("input.txt")),number=3)/3:9f}s")
+    print(f"Solve\t\t{timeit.timeit((lambda:solution_2(input_2)),number=3)/3:9f}s")
+
+
+perf_test()
 
 #endregion
