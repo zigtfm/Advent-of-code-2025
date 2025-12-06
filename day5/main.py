@@ -37,9 +37,7 @@ def init_input(path: str) -> dict:
         )
 
 
-    output["available_ids"] = [int(x) for x in input.read().split("\n")]
-
-
+    output["available_ids"] = [int(x) for x in input.readlines()]
     output["valid_id_ranges"] = compress_ranges(output["valid_id_ranges"])
 
     input.close()
