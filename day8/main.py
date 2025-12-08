@@ -224,8 +224,8 @@ def perf_test():
     print("Part 1")
 
     _input = init_input("input.txt")
-    print(f"Parse input\t{timeit.timeit((lambda: init_input("input.txt")),number=3)/3:9f}s")
-    print(f"Solve\t\t{timeit.timeit((lambda:solution_1(_input, count = 1000)),number=3)/3:9f}s")
+    print(f"Parse input\t{timeit.timeit((lambda: init_input("input.txt")),number=3)/3:.9f}s")
+    print(f"Solve\t\t{timeit.timeit((lambda:solution_1(_input, count = 1000)),number=3)/3:.9f}s")
 
     # print("Part 2")
 
