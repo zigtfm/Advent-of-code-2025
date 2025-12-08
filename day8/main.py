@@ -17,6 +17,7 @@ def init_input(path: str) -> dict:
 def vec3_distance(x1, y1, z1, x2, y2, z2):
     return ((x1-x2)**2+(y1-y2)**2+(z1-z2)**2)**.5
 
+
 def solution_1(input: list, count=1) -> int:
     results = []
 
@@ -78,6 +79,7 @@ def solution_1(input: list, count=1) -> int:
 
     lengths = sorted([len(x) for x in groups], reverse=True)
     return lengths[0] * lengths[1] * lengths[2]
+
 
 def solution_2(input: list) -> int:
     results = []
@@ -178,25 +180,24 @@ print(solution_1([
 ], count=10))
 
 """
-print(solution_1(_input, count = 1000))
-print(solution_2(_input))
+#print(solution_1(_input, count = 1000))
+#print(solution_2(_input))
 
 import timeit
-
-import timeit
+import statistics
 
 def perf_test():
     print("Part 1")
 
     _input = init_input("input.txt")
-    print(f"Parse input\t{timeit.timeit((lambda: init_input("input.txt")),number=10)/10:.9f}s")
-    print(f"Solve\t\t{timeit.timeit((lambda:solution_1(_input, count = 1000)),number=10)/10:.9f}s")
+    result = timeit.repeat((lambda:solution_1(_input, count = 1000)),number=1, repeat=10)
+    print(f"Results: {statistics.mean(result):.9f}s +- {statistics.stdev(result):.9f}s")
 
     print("Part 2")
 
     _input = init_input("input.txt")
-    print(f"Parse input - same as above")
-    print(f"Solve\t\t{timeit.timeit((lambda:solution_2(_input)),number=10)/10:.9f}s")
+    result = timeit.repeat((lambda:solution_1(_input, count = 1000)),number=1, repeat=10)
+    print(f"Results: {statistics.mean(result):.9f}s +- {statistics.stdev(result):.9f}s")
 
 
 perf_test()
