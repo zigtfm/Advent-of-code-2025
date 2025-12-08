@@ -108,11 +108,7 @@ def solution_1_debug(input: list, count=1, display=False) -> int:
     return lengths[0] * lengths[1] * lengths[2]
 
 def solution_1(input: list, count=1) -> int:
-    debug_count = count
-
     results = []
-    #distances = []
-    #pairs = []
 
     for i in range(len(input)):
         vec3_a = input[i]
@@ -125,14 +121,12 @@ def solution_1(input: list, count=1) -> int:
                     vec3_b[0], vec3_b[1], vec3_b[2]
                 ),
                 [i, j]
-                #[vec3_a, vec3_b]
             ))
 
     connected_indexes_group = {}
     for i in range(len(input)):
         connected_indexes_group[i] = -1
 
-    #sorted_result = sorted(results)
     distance_sorted_result = [pairs for distances, pairs in sorted(results)]
 
     groups = []
@@ -146,8 +140,6 @@ def solution_1(input: list, count=1) -> int:
 
 
         if a_connected and b_connected and same_group:
-            if count == 0:
-                break
             continue
 
         elif a_connected and b_connected and not same_group:
@@ -183,8 +175,84 @@ def solution_1(input: list, count=1) -> int:
     lengths = sorted([len(x) for x in groups], reverse=True)
     return lengths[0] * lengths[1] * lengths[2]
 
-def solution_2(input: list, display: bool=False) -> int:
-    return 0
+def solution_2(input: list) -> int:
+    results = []
+
+    for i in range(len(input)):
+        vec3_a = input[i]
+        for j in range(i+1, len(input)):
+            vec3_b = input[j]
+
+            results.append((
+                vec3_distance(
+                    vec3_a[0], vec3_a[1], vec3_a[2],
+                    vec3_b[0], vec3_b[1], vec3_b[2]
+                ),
+                [i, j]
+            ))
+
+    connections_count = 0
+    connections_max = len(input)-1
+
+    connected_indexes_group = {}
+    for i in range(len(input)):
+        connected_indexes_group[i] = -1
+
+    distance_sorted_result = [pairs for distances, pairs in sorted(results)]
+
+    groups = []
+
+    for pair in distance_sorted_result:
+        a_group = connected_indexes_group[pair[0]]
+        b_group = connected_indexes_group[pair[1]]
+        a_connected = a_group != -1
+        b_connected = b_group != -1
+        same_group = a_group == b_group
+
+
+        if a_connected and b_connected and same_group:
+            continue
+
+        elif a_connected and b_connected and not same_group:
+            for n in groups[b_group]:
+                connected_indexes_group[n] = a_group
+
+            groups[a_group].extend(groups[b_group])
+            groups[b_group] = []
+
+            connections_count += 1
+
+        elif not a_connected and not b_connected:
+            connected_indexes_group[pair[0]] = len(groups)
+            connected_indexes_group[pair[1]] = len(groups)
+
+            groups.append(pair[:])
+
+            connections_count += 1
+
+        elif a_connected and not b_connected:
+            connected_indexes_group[pair[1]] = connected_indexes_group[pair[0]]
+
+            for i in range(len(groups)):
+                if pair[0] in groups[i]:
+                    groups[i].append(pair[1])
+                    connections_count += 1
+                    break
+
+
+        elif not a_connected and b_connected:
+            connected_indexes_group[pair[0]] = connected_indexes_group[pair[1]]
+
+            for i in range(len(groups)):
+                if pair[1] in groups[i]:
+                    groups[i].append(pair[0])
+                    connections_count += 1
+                    break
+
+        if connections_count == connections_max:
+            return input[pair[0]][0] * input[pair[1]][0]
+
+    return "problem"
 
 _input = init_input("input.txt")
 
@@ -214,7 +282,7 @@ print(solution_1([
 
 """
 #print(solution_1(_input, count = 1000))
-#print(solution_2(_input))
+print(solution_2(_input))
 
 import timeit
 
@@ -227,11 +295,11 @@ def perf_test():
     print(f"Parse input\t{timeit.timeit((lambda: init_input("input.txt")),number=3)/3:.9f}s")
     print(f"Solve\t\t{timeit.timeit((lambda:solution_1(_input, count = 1000)),number=3)/3:.9f}s")
 
-    # print("Part 2")
+    print("Part 2")
 
-    # input_2 = init_input_2("input.txt")
-    # print(f"Parse input\t{timeit((lambda:init_input_2("input.txt")),number=3)/3:9f}s")
-    # print(f"Solve\t\t{timeit((lambda:solution_2(input_2)),number=3)/3:9f}s")
+    _input = init_input("input.txt")
+    print(f"Parse input - same as above")
+    print(f"Solve\t\t{timeit.timeit((lambda:solution_2(_input)),number=3)/3:.9f}s")
 
 
 perf_test()
